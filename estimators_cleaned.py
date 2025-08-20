@@ -101,8 +101,8 @@ def cartesian_to_spherical(X: np.ndarray) -> np.ndarray:
     Following equaton (eq:polar_coords) from the paper Passino et al (2013)
     θ_j = 
         arccos(x_2/||x_{:2}||)              if j=1, x_1 >= 0
-        2\pi - arccos(x_2/||x_{:2}||)       if j=1, x_1 < 0
-        2\pi * arccos(x_{j+1}/||x_{:j+1}||) if j >= 2
+        2 pi - arccos(x_2/||x_{:2}||)       if j=1, x_1 < 0
+        2 pi * arccos(x_{j+1}/||x_{:j+1}||) if j >= 2
     
     NB, paper uses 1-based indexing, we convert to 0-based.
     
