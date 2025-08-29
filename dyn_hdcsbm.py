@@ -311,7 +311,6 @@ class HierarchicalDynamicDCSBM(DynamicRDPG):
     def __init__(self, generator: HierarchicalMarkovDCSBMGenerator):
         super().__init__(generator)
         self.hierarchical_generator = generator
-    
 
 # Factory function to create the hierarchical model.  
 def create_hierarchical_markov_dcsbm(

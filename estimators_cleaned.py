@@ -261,7 +261,6 @@ def estimate_d_regularized_aic(
     return d_est, info
 
 
-#TODO:  Remove 
 def gmm_clustering(
         X: np.ndarray, 
         n_clusters: int, 
@@ -545,7 +544,7 @@ def compute_temporal_stability(Y_list, d, verbose=False):
     return np.array(stability_scores)
 
 
-def find_elbow_cutoff(sorted_scores, significance_level=0.01, verbose=True):    
+def find_elbow_cutoff(sorted_scores, verbose=True):    
     """
     Find elbow in sorted stability scores using perpendicular distance method.
 
@@ -647,7 +646,7 @@ def estimate_n_clusters(Y_stable, max_k=10, verbose=True):
     return best_k
 
 
-def detect_super_communities_simple(adjacency_matrices, d=20, significance_level=0.01, 
+def detect_super_communities_simple(adjacency_matrices, d=20, 
                                    n_super_communities=None, verbose=False):
     """
     Simplified pipeline for super-community detection using temporal stability.
@@ -684,7 +683,7 @@ def detect_super_communities_simple(adjacency_matrices, d=20, significance_level
     singular_values = S
     dim_order = np.argsort(singular_values)[::-1]
     sorted_scores = singular_values[dim_order]
-    n_stable = find_elbow_cutoff(sorted_scores, significance_level, verbose=False)
+    n_stable = find_elbow_cutoff(sorted_scores, verbose=False)
     stable_dims = dim_order[:n_stable]
 
     Y = V[:, stable_dims] @ np.diag(np.sqrt(singular_values[stable_dims]))
@@ -736,7 +735,7 @@ def detect_super_communities_simple(adjacency_matrices, d=20, significance_level
     return labels, analytics
 
 
-def detect_super_communities_stable(adjacency_matrices, D_init=20, significance_level=0.01, 
+def detect_super_communities_stable(adjacency_matrices, D_init=20, 
                                    n_super_communities=None, verbose=False):
     """
     Super-community detection using temporal stability.
@@ -780,7 +779,7 @@ def detect_super_communities_stable(adjacency_matrices, D_init=20, significance_
     # Step 3: Find stable dimensions
     dim_order = np.argsort(stability_scores)[::-1]
     sorted_scores = stability_scores[dim_order]
-    n_stable = find_elbow_cutoff(sorted_scores, significance_level, verbose=False)
+    n_stable = find_elbow_cutoff(sorted_scores, verbose=False)
     stable_dims = dim_order[:n_stable]
     
     if verbose:
@@ -834,10 +833,7 @@ def dynamic_hierarchical_dcsbm_detection_simple(
     R_super: Optional[int] = None,
     d_subgraph: Optional[int] = None,
     R_subgraph: Optional[List[int]] = None,
-    significance_level: float = 0.01,
-    d_threshold: float = 0.1,
     regularization_strength: float = 3.5,
-    stability_weight: float = 0.0,
     verbose: bool = False,
     plot_diagnostics: bool = False,
 ) -> Dict:
@@ -911,7 +907,6 @@ def dynamic_hierarchical_dcsbm_detection_simple(
     super_community_labels, super_analytics = detect_super_communities_simple(
         adjacency_matrices,
         d=D,
-        significance_level=significance_level,
         n_super_communities=R_super,
         verbose=verbose
     )
@@ -1140,10 +1135,7 @@ def dynamic_hierarchical_dcsbm_detection_stable(
     R_super: Optional[int] = None,
     d_subgraph: Optional[int] = None,
     R_subgraph: Optional[List[int]] = None,
-    significance_level: float = 0.01, 
-    d_threshold: float = 0.1, #TODO:  delete 
     regularization_strength: float = 3.5, 
-    stability_weight: float = 0.0, #TODO:  delete 
     verbose: bool = False,
     plot_diagnostics: bool = False
 ) -> Dict:
@@ -1218,7 +1210,6 @@ def dynamic_hierarchical_dcsbm_detection_stable(
     super_community_labels, super_analytics = detect_super_communities_stable(
         adjacency_matrices,
         D_init=D,
-        significance_level=significance_level,
         n_super_communities=R_super,
         verbose=verbose
     )
